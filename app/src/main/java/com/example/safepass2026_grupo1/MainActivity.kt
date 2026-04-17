@@ -31,6 +31,7 @@ fun SafePassApp() {
     // Estados para controlar los campos de entrada y la UI
     var nombreInput by remember { mutableStateOf("") }
     var edadInput by remember { mutableStateOf("") }
+    var tipoEntradaInput by remember { mutableStateOf("") }
     var estadoRegistro by remember { mutableStateOf<RegistroState>(RegistroState.Idle) }
 
     // Implementación obligatoria de Scaffold
@@ -63,6 +64,14 @@ fun SafePassApp() {
                 value = edadInput,
                 onValueChange = { edadInput = it },
                 label = { Text("Edad") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            OutlinedTextField(
+                value = tipoEntradaInput,
+                onValueChange = { tipoEntradaInput = it },
+                label = { Text("Tipo de entrada") },
+                placeholder = { Text("General o VIP") },
                 modifier = Modifier.fillMaxWidth()
             )
 
