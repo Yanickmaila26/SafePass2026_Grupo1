@@ -12,18 +12,21 @@ fun realizarCheckIn(
 ): RegistroState {
 
     // Validación usando toIntOrNull()
-    val edadIngresada = edadStr.toIntOrNull()
+    val edadIngresada = edadStr.toIntOrNull() ?: 0
 
     // let para operaciones si los valores no son nulos
-    return if (nombre.isNotBlank() && edadIngresada.esMayorDeEdad()) {
-        val nuevoAsistente = Asistente(nombre, edadIngresada, tipo).apply {
-            onValidacionPrioridad(this)
+    return nombre.takeIf { it.isNotBlank() }?.let { nombreValido ->
+        if (edadIngresada.esMayorDeEdad()) {
+            val nuevoAsistente = Asistente(nombreValido, edadIngresada, tipo).apply {
+                onValidacionPrioridad(this)
+            }
+            RegistroState.Success(
+                asistente = nuevoAsistente,
+                mensaje = "Registro exitoso: ${nuevoAsistente.nombre}."
+            )
+        } else {
+            RegistroState.Error("El asistente debe ser mayor de edad.")
         }
-        RegistroState.Success(
-            asistente = nuevoAsistente,
-            mensaje = "Registro exitoso: ${nuevoAsistente.nombre} (${nuevoAsistente.tipoEntrada})."
-        )
-    } else {
-        RegistroState.Error("Datos inválidos: el nombre no puede estar vacío y debe ser mayor de edad.")
-    }
+    } ?: RegistroState.Error("El nombre no puede estar vacío.") // Elvis para el estado de error
 }
+
