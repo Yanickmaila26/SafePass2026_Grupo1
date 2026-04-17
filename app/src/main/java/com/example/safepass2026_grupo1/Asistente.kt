@@ -2,7 +2,7 @@ package com.example.safepass2026_grupo1
 
 data class Asistente(
     val nombre: String,
-    val edad: Int,
+    val edad: Int?,
     val tipoEntrada: String
 )
 
